@@ -1,0 +1,25 @@
+database-info = {
+  name = "",
+  creation-date = "",
+  key="" // en SHA-256
+}
+
+
+
+
+
+logs = {
+  
+  
+  
+
+}
+
+
+database = {
+  id = {name : "",  type : "",  category : "", key : ""}
+  id = {name : "",  type : "",  category : "", key : ""}
+  id = {name : "",  type : "",  category : "", key : ""}
+}
+
+
