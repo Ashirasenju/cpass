@@ -64,21 +64,31 @@ bool password_check(const char *input, const char *key){
 
 
 
-void main()
+int main()
 {
-   char password[] = "helloworld";
-    char key[] = "936a185caaa266bb9cbe981e9e05cb78cd732b0b3280b944412bb6f8f8f07af";
-  // printf("%d\n", password_check(password,key));
+  int number_of_try = 0;
+  char userpassword[64];
+  printf("Password : ");
+  if (fgets(userpassword, sizeof(userpassword), stdin) != NULL){
+    userpassword[strcspn(userpassword, "\n")] = '\0';
+  }
+  bool unlock_status = password_check(userpassword,"5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8");
 
+  if(number_of_try >= 3){
+    return 0;
+  }
 
-  unsigned char hash[32];
-  SHA256((unsigned char*)password, strlen(password), hash);
+  if(unlock_status) {
+    printf("\nWelcome");
+  } else{
+    printf("\nWrong. Only two tries left");
+    number_of_try++;
+  }
 
-
+  return 0;
   
 
 
 
-  printf(" \n %d \n ",password_check(password,key));
 
 }
