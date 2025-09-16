@@ -66,23 +66,42 @@ bool password_check(const char *input, const char *key){
 
 int main()
 {
+
+
+
+
+  bool isLogin = false;
   int number_of_try = 0;
-  char userpassword[64];
-  printf("Password : ");
-  if (fgets(userpassword, sizeof(userpassword), stdin) != NULL){
-    userpassword[strcspn(userpassword, "\n")] = '\0';
-  }
-  bool unlock_status = password_check(userpassword,"5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8");
+  while (!isLogin && number_of_try < 3) {
+        char userpassword[64];
+        printf("Password : ");
+        if (fgets(userpassword, sizeof(userpassword), stdin) != NULL){
+          userpassword[strcspn(userpassword, "\n")] = '\0';
+        }
+        bool unlock_status = password_check(userpassword,"5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8");
 
-  if(number_of_try >= 3){
-    return 0;
+
+
+        if(unlock_status) {
+          printf("\nWelcome");
+        } else{
+          if (number_of_try < 2) {
+          number_of_try++;
+          printf("\nWrong. Only %d tries left \n",3-number_of_try);
+        }
+
+          else {
+            number_of_try++;
+          }
+        }
+
+        
   }
 
-  if(unlock_status) {
-    printf("\nWelcome");
-  } else{
-    printf("\nWrong. Only two tries left");
-    number_of_try++;
+  if (number_of_try >= 3){
+     printf("You have tried to many times. Please restart the app and try again.\n");
+
+
   }
 
   return 0;
