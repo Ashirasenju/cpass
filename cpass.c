@@ -25,7 +25,7 @@ struct key
 
 struct loaded_db
 {
-  char hashed_key[64];
+  char hashed_key[65];
   struct logs log;
   struct key Keys[256];
 };
@@ -57,13 +57,100 @@ struct loaded_db parser(const char *path) {
     }
     if (len == 0 && c == EOF) {
         free(buffer);
-        return;
+        struct loaded_db empty;
+        return empty;
     }
     buffer[len] = '\0';
 
     // the first line is in buffer
     // now let's parse
     
+    int index = 0;
+
+
+    while(buffer[index] != '\''){
+      index++;
+    }
+    index++;
+    index++;
+    index++;
+
+
+    char name[64];
+    int name_index = 1;
+    name[0] = buffer[index];
+    while(buffer[index] != '\''){
+      name[name_index] = buffer[index];
+      index++;
+      name_index++;
+    }
+
+    name[name_index++] = '\0';
+    index++;;
+    index++;;
+    while(buffer[index] != '\''){
+      index++;;
+    }
+    index++;
+
+    char date[11];
+
+
+    int date_index = 0 ;
+
+
+    while(buffer[index] != '\''){
+      date[date_index] = buffer[index];
+      date_index++;
+      index++;
+    }
+    date[11] = '\0';
+
+    index++;
+    index++;
+
+    while(buffer[index] != '\''){
+      index++;;
+    }
+    index++;
+
+    char key[65];
+
+    int index_char = 0;
+
+
+    while(buffer[index] != '\''){
+      key[index_char] = buffer[index];
+      index_char++;
+      index++;
+    }
+    key[65] = '\0';
+
+
+
+    struct loaded_db parsed;
+    struct logs logs;
+    struct key keys;
+
+    // Copier key dans hashed_key
+    strncpy(parsed.hashed_key, key, sizeof(parsed.hashed_key) - 1);
+
+    // Toujours terminer parsed.hashed_key par '\0'
+    parsed.hashed_key[sizeof(parsed.hashed_key) - 1] = '\0';
+    
+    parsed.log = logs;
+    parsed.Keys[0] = keys;
+
+        
+    test_parsing_steps(name, date, key, parsed);
+
+
+
+
+
+
+
+
 
     return parsed;
 }
