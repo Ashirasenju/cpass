@@ -7,17 +7,17 @@
 
 struct logs
 {
-  char date;
-  char hour;
-  char message;
+  char date[10];
+  char hour[9];
+  char message[256];
 };
 
 
 struct key
 {
-  char nom;
-  char description;
-  char key;
+  char nom[32];
+  char description[256];
+  char key[64];
 };
 
 
@@ -25,19 +25,65 @@ struct key
 
 struct loaded_db
 {
-  char hashed_key;
+  char hashed_key[64];
   struct logs log;
   struct key Keys[256];
 };
 
+struct loaded_db parser(const char *path) {
+  FILE* db;
+
+  db = fopen(path, "r");
+    if (db == NULL) {
+        printf("The path of the file is broken. Please go into your .config and set it right.");
+        return;
+  }
+
+  // Since the good function are only avaliable for the goats (Linux,Unix) i am forced to use the STD C and fgetc 
+  // So this part will focus to read line by line the file db.lck
+
+    size_t size = 64;
+    size_t len = 0;
+    char *buffer = malloc(size);
+
+    int c;
+    while ((c = fgetc(db)) != EOF && c != '\n') {
+        buffer[len++] = (char)c;
+        if (len == size) {
+            size *= 2;
+            buffer = realloc(buffer, size);
+            if (!buffer) return;
+        }
+    }
+    if (len == 0 && c == EOF) {
+        free(buffer);
+        return;
+    }
+    buffer[len] = '\0';
+
+    // the first line is in buffer
+    // now let's parse
+    
+
+    return parsed;
+}
+
+void test_parsing_steps(char *name, char *date, char *key, struct loaded_db parsed) {
+    printf("\n=== Test parsing step by step ===\n");
+
+    printf("Step 1: name parsed: '%s'\n", name);
+    printf("Step 2: date parsed: '%s'\n", date);
+    printf("Step 3: key parsed: '%s'\n", key);
+
+    printf("Step 4: key copied into parsed.hashed_key: '%s'\n", parsed.hashed_key);
+    printf("=== End of test ===\n\n");
+}
 
 
 
 
 void sha256_string(const char *input, unsigned char output[32]) {
     SHA256((unsigned char*)input, strlen(input), output);
-
-    
 }
 
 
@@ -83,7 +129,8 @@ int main()
 
 
         if(unlock_status) {
-          printf("\nWelcome");
+          printf("\nWelcome\n");
+          break;
         } else{
           if (number_of_try < 2) {
           number_of_try++;
@@ -103,9 +150,17 @@ int main()
 
 
   }
+    char filename[] = "db.lck";
+    struct loaded_db db = parser(filename);
 
-  return 0;
-  
+    printf("Hashed key from parser: ");
+    for (int i = 0; i < 64 && db.hashed_key[i] != '\0'; i++) {
+        printf("%c", db.hashed_key[i]);  // caractères ASCII si c'est du texte
+    }
+    printf("\n");
+
+
+
 
 
 
