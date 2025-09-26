@@ -5,14 +5,6 @@
 #include <openssl/sha.h>
 
 
-struct logs
-{
-  char date[10];
-  char hour[9];
-  char message[256];
-};
-
-
 struct key
 {
   char nom[32];
@@ -25,8 +17,10 @@ struct key
 
 struct loaded_db
 {
+  char name[64];
+
   char hashed_key[65];
-  struct logs log;
+
   struct key Keys[256];
 };
 
@@ -68,24 +62,22 @@ struct loaded_db parser(const char *path) {
     int index = 0;
 
 
+    
     while(buffer[index] != '\''){
       index++;
     }
     index++;
-    index++;
-    index++;
-
-
+         
     char name[64];
     int name_index = 1;
-    name[0] = buffer[index];
     while(buffer[index] != '\''){
       name[name_index] = buffer[index];
       index++;
       name_index++;
     }
+    printf("%s Index après le parsing de nom\n",name);
 
-    name[name_index++] = '\0';
+    name[63] = '\0';
     index++;;
     index++;;
     while(buffer[index] != '\''){
@@ -125,28 +117,14 @@ struct loaded_db parser(const char *path) {
       index++;
     }
     key[65] = '\0';
-
-
+    // Scanning the keys of the db.lck file 
 
     struct loaded_db parsed;
-    struct logs logs;
     struct key keys;
 
-    // Copier key dans hashed_key
-    strncpy(parsed.hashed_key, key, sizeof(parsed.hashed_key) - 1);
-
-    // Toujours terminer parsed.hashed_key par '\0'
-    parsed.hashed_key[sizeof(parsed.hashed_key) - 1] = '\0';
-    
-    parsed.log = logs;
-    parsed.Keys[0] = keys;
-
-        
-    test_parsing_steps(name, date, key, parsed);
-
-
-
-
+       
+    parsed.name = name;
+    parsed.hashed_key = key; 
 
 
 
@@ -158,7 +136,7 @@ struct loaded_db parser(const char *path) {
 void test_parsing_steps(char *name, char *date, char *key, struct loaded_db parsed) {
     printf("\n=== Test parsing step by step ===\n");
 
-    printf("Step 1: name parsed: '%s'\n", name);
+    printf("Step 1: name parsed: %s\n", name);
     printf("Step 2: date parsed: '%s'\n", date);
     printf("Step 3: key parsed: '%s'\n", key);
 
