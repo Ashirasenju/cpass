@@ -137,7 +137,7 @@ struct loaded_db parser(const char *path) {
 
     struct key keyList[256];
 
-    int index = 17;
+    index = 17;
     
     while(buffer[index] != ']' && buffer[index] != EOF) {
       while(buffer[index] != '}' && buffer[index] != EOF){
@@ -167,8 +167,34 @@ struct loaded_db parser(const char *path) {
         indexName++;
       }
 
+      index++;
+      index++;
 
 
+      while (buffer[index != '\'']){
+        index++;
+      }
+
+      index++;
+      index++;
+      
+      int indexCategory = 0;
+
+      while (buffer[index] != '\''){
+        category[indexCategory] = buffer[index];
+        index++;
+        indexCategory++;
+      }
+
+
+      index++;
+      index++;
+      int indiceDescription = 0;
+      while (buffer[index] != '\''){
+        description[indiceDescription] = buffer[index];
+        index++;
+        indiceDescription++;
+      }
 
 
 
@@ -180,8 +206,7 @@ struct loaded_db parser(const char *path) {
     struct key keys;
 
          
-    parsed.name = name;
-    parsed.hashed_key = key; 
+    parsed.name = name; 
 
 
 
