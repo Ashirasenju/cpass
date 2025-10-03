@@ -1,4 +1,4 @@
 database-info={name='ashira',creation-date='12-10-2006',key='3c1f112320fe353c1574f972e3a069ce1e8ffd90dc55874e493a66ebd16026ce'}
-database={id={name:'',type:'',category:'',key:''},id={name:'',type:'',category:'',key:''},id={name:'',type:'',category:'',key:''}}
+database=[{name:'Google',type:'Password',category:'Web',description='iuergheriug',key:'banana'},{name:'Microsoft',type:'password',category:'Web',description='iuerhiure',key:'apple'},{name:'Linoux',type:'password',category:'OS',description='smokkkeeeee on the water fire in the sky',key:'strawberry'}]
 
 

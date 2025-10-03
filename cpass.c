@@ -8,6 +8,8 @@
 struct key
 {
   char nom[32];
+  char type[16];
+  char category[16];
   char description[256];
   char key[64];
 };
@@ -117,12 +119,67 @@ struct loaded_db parser(const char *path) {
       index++;
     }
     key[65] = '\0';
-    // Scanning the keys of the db.lck file 
+    // Scanning the keys of the db.lck file
+     
 
+    len = 0;
+    while ((c = fgetc(db)) != EOF && c != '\n') {
+      buffer[len++] = (char)c;
+        if (len == size) {
+          size *= 2;
+          buffer = realloc(buffer, size);
+        if (!buffer) return;
+      }
+    }
+    buffer[len] = '\0';
+    
+    // Create a list of keys
+
+    struct key keyList[256];
+
+    int index = 17;
+    
+    while(buffer[index] != ']' && buffer[index] != EOF) {
+      while(buffer[index] != '}' && buffer[index] != EOF){
+       char name[32];
+       char type[16];
+       char category[16];
+       char description[256];
+       char key[64];
+       int indexName = 0;
+       while (buffer[index] != '\''){
+        name[indexName] = buffer[index];
+        index++;
+        indexName++;
+       }
+       // Skip the first '
+       index++;
+       index++;
+       while (buffer[index != '\'']){
+        index++;
+      }   
+      index++;
+      index++;
+      int indexType = 0;
+      while (buffer[index] != '\''){
+        type[indexType] = buffer[index];
+        index++;
+        indexName++;
+      }
+
+
+
+
+
+
+    }
+
+    } 
+    
     struct loaded_db parsed;
     struct key keys;
 
-       
+         
     parsed.name = name;
     parsed.hashed_key = key; 
 
